@@ -82,7 +82,7 @@ public class SpaceshipMotor : MonoBehaviour, IRequireUserInput
     bool CanMoveVertically(float dY, float vertical)
     {
         float newY = transform.position.y + dY;
-        return (vertical < 0f && newY > Min.y) || (vertical > 0f && newY > Max.y);
+        return (vertical < 0f && newY > Min.y) || (vertical > 0f && newY < Max.y);
     }
 
 }

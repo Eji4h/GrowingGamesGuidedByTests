@@ -9,9 +9,9 @@ public class AlienShip : MonoBehaviour {
 	public GameObject Explosion;
 
 	void Update () {
-		// Move ();
-		// CheckRange ();
-	}
+        Move();
+        CheckRange();
+    }
 
 	// Occurs when objects collide.
 	// If any of colliding objects has this method defined, 
@@ -19,7 +19,8 @@ public class AlienShip : MonoBehaviour {
 	// And obviously AlienShip has to die on collision
 	void OnCollisionEnter2D(Collision2D other)
 	{
-
+	    if (IsLaserBullet(other))
+	        Die();
 	}
 
 
@@ -29,15 +30,17 @@ public class AlienShip : MonoBehaviour {
 	// Destroy (this.gameObject);
 	void CheckRange()
 	{
-		throw new NotImplementedException ();
+	    if (transform.position.y < Range)
+	        Destroy(gameObject);
 	}
 
 
 	// If we want to prevent friendly alien deathes then 
 	// we shoud assume that aliens die only on laser bullet collision
 	// return other.gameObject.tag == "LaserBullet";
-	bool IsLaserBullet(Collision2D other){
-		throw new NotImplementedException ();
+	bool IsLaserBullet(Collision2D other)
+	{
+	    return other.transform.tag == "LaserBullet";
 	}
 
 
@@ -47,7 +50,8 @@ public class AlienShip : MonoBehaviour {
 	// this.transform.Translate (0, dy , 0); 
 	void Move ()
 	{
-		throw new NotImplementedException ();
+	    var dy = -1f*Speed*Time.deltaTime;
+        transform.Translate(0f, dy, 0f);
 	}
 
 	// To kill the alien, it is enough to remove the game object
@@ -56,9 +60,10 @@ public class AlienShip : MonoBehaviour {
 	// Lets spawn an Explosion
 	// SpawnExplosion ();
 	void Die ()
-	{
-		throw new NotImplementedException ();
-	}
+    {
+        Destroy(gameObject);
+        SpawnExplosion();
+    }
 
 
 	// Spawning explosion is quite simple
@@ -67,7 +72,8 @@ public class AlienShip : MonoBehaviour {
 	// explosion.transform.parent = this.transform.parent;
 	void SpawnExplosion ()
 	{
-
-	}
+	    var explosion = Instantiate(Explosion, transform.position, Quaternion.identity) as GameObject;
+        explosion.transform.parent = transform.parent;
+    }
 
 }
